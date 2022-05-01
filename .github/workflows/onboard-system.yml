@@ -37,6 +37,9 @@ jobs:
     - id: parse-system-def
       name: parse-system-def
       run: |
+        set -x
+        ls -alR ${SYSTEM_DEFS_DIR}
+
         SYSTEM_DEFS_FILE=$(ls ${SYSTEM_DEFS_DIR}/${SYSTEM_NAME}.y*)
         REPO_NAMES=$(yq e '[.organization + "/" + .components[].repo]' "${SYSTEM_DEFS_FILE}" -o json)
         echo "REPO_NAMES: ${REPO_NAMES}"
