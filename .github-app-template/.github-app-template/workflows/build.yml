@@ -35,7 +35,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: hippyod/cicd-manager
-        ref: main
+        ref: development
         path: ${{ env.CICD_REPO_MGR_DIR }}
         token: ${{ env.PAT_TOKEN }}
     - id: parse-system-def
