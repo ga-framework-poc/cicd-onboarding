@@ -18,8 +18,8 @@ jobs:
         set -x
         echo "SYSTEM_NAME=${{ github.event.inputs.system-name }}" >> ${GITHUB_ENV}
         echo "CICD_REPO_ONBOARDING_DIR=${GITHUB_WORKSPACE}/${{ github.event.repository.name }}" >> ${GITHUB_ENV}
-        echo "SYSTEM_DEFS_DIR=${GITHUB_WORKSPACE}/${{ github.event.repository.name }}/.github/system-defs" >> ${GITHUB_ENV}
         echo "CICD_REPO_MGR_DIR=${GITHUB_WORKSPACE}/cicd-manager" >> ${GITHUB_ENV}
+        echo "SYSTEM_DEFS_DIR=${GITHUB_WORKSPACE}/cicd-manager/.github/system-defs" >> ${GITHUB_ENV}
         oc version
         set +x
     - id: clone-cicd-onboarding-repo
