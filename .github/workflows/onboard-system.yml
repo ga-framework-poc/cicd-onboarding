@@ -104,7 +104,7 @@ jobs:
         run: |
           set -ex 
 
-          ls -alR ${CICD_REPO_ONBOARDING_DIR}
+          ls -alR --ignore=.git ${CICD_REPO_ONBOARDING_DIR}
 
           for F_NAME in $(find ${CICD_REPO_ONBOARDING_DIR}/.github-app-template/workflows -name "*.yml" -or -name "*.yaml")
           do
