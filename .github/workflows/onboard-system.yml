@@ -42,11 +42,15 @@ jobs:
       run: |
         set -ex
         SYSTEM_DEFS_FILE=$(ls ${SYSTEM_DEFS_DIR}/${SYSTEM_NAME}.y*)
+        BRANCH=$(yq e '.branch' "${SYSTEM_DEFS_FILE}")
         REPO_NAMES=$(yq e '[.organization + "/" + .components[].repo]' "${SYSTEM_DEFS_FILE}" -o json)
+        echo "BRANCH: ${BRANCH}"
         echo "REPO_NAMES: ${REPO_NAMES}"
+        echo ::set-output name=component-branch::$(echo ${BRANCH})
         echo ::set-output name=component-repos::$(echo ${REPO_NAMES})
         set +ex
     outputs:
+      component-branch: ${{ steps.parse-system-def.outputs.component-branch }}
       component-repos: ${{ steps.parse-system-def.outputs.component-repos }}
       CICD_REPO_ONBOARDING_DIR: ${{ env.CICD_REPO_ONBOARDING_DIR }}
   onboard-system:
@@ -76,7 +80,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: ${{ matrix.component-repo }}
-          ref: main
+          ref: ${{ needs.gather-system-info.outputs.component-branch }}
           path: ${{ env.WORKING_DIR }}
           token: ${{ env.PAT_TOKEN }}
       - id: install-github-workflow-directory
