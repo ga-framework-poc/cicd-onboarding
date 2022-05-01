@@ -15,7 +15,7 @@ jobs:
     - id: setup-environment
       name: setup-environment
       run: |
-        set -x
+        set -ex
         CICD_MANAGER=cicd-manager
         echo "CICD_MANAGER=${CICD_MANAGER}" >> ${GITHUB_ENV}
         echo "SYSTEM_NAME=${{ github.event.inputs.system-name }}" >> ${GITHUB_ENV}
@@ -23,7 +23,7 @@ jobs:
         echo "CICD_REPO_MGR_DIR=${GITHUB_WORKSPACE}/${CICD_MANAGER}" >> ${GITHUB_ENV}
         echo "SYSTEM_DEFS_DIR=${GITHUB_WORKSPACE}/${CICD_MANAGER}/.github/system-defs" >> ${GITHUB_ENV}
         oc version
-        set +x
+        set +ex
     - id: clone-cicd-onboarding-repo
       name: clone-cicd-onboarding-repo
       uses: actions/checkout@v2
@@ -40,13 +40,12 @@ jobs:
     - id: parse-system-def
       name: parse-system-def
       run: |
-        set -x
-        ls -alR --ignore=.git ${GITHUB_WORKSPACE}
-
+        set -ex
         SYSTEM_DEFS_FILE=$(ls ${SYSTEM_DEFS_DIR}/${SYSTEM_NAME}.y*)
         REPO_NAMES=$(yq e '[.organization + "/" + .components[].repo]' "${SYSTEM_DEFS_FILE}" -o json)
         echo "REPO_NAMES: ${REPO_NAMES}"
         echo ::set-output name=component-repos::$(echo ${REPO_NAMES})
+        set +ex
     outputs:
       component-repos: ${{ steps.parse-system-def.outputs.component-repos }}
       CICD_REPO_ONBOARDING_DIR: ${{ env.CICD_REPO_ONBOARDING_DIR }}
@@ -62,15 +61,15 @@ jobs:
       - id: setup-environment
         name: setup-environment
         run: |
-          set -x
+          set -ex
           echo "WORKING_DIR=${GITHUB_WORKSPACE}/${{ matrix.component-repo }}" >> ${GITHUB_ENV}
           echo "PAT_TOKEN=$(cat /var/secrets/PAT_TOKEN)" >> ${GITHUB_ENV}
-          set +x
-      - id: clone-cicd-manager-repo
-        name: clone-cicd-manager-repo
+          set +ex
+      - id: clone-cicd-onboarding-repo
+        name: clone-cicd-onboarding-repo
         uses: actions/checkout@v2
         with:
-          ref: main
+          ref: development
           path: ${{ env.CICD_REPO_ONBOARDING_DIR }}
       - id: clone-app-repo
         name: clone-app-repo
