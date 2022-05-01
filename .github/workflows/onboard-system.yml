@@ -68,7 +68,6 @@ jobs:
         run: |
           set -ex
           echo "WORKING_DIR=${GITHUB_WORKSPACE}/${{ matrix.component-repo }}" >> ${GITHUB_ENV}
-          echo "PAT_TOKEN=$(cat /var/secrets/PAT_TOKEN)" >> ${GITHUB_ENV}
           set +ex
       - id: clone-cicd-onboarding-repo
         name: clone-cicd-onboarding-repo
@@ -83,7 +82,7 @@ jobs:
           repository: ${{ matrix.component-repo }}
           ref: ${{ env.DEV_BRANCH }}
           path: ${{ env.WORKING_DIR }}
-          token: ${{ env.PAT_TOKEN }}
+          token: ${{ secrets.ONBOARDING_CREDS }}
       - id: install-github-workflow-directory
         name: install-github-workflow-directory
         env:
