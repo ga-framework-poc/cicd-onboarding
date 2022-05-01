@@ -46,7 +46,7 @@ jobs:
         REPO_NAMES=$(yq e '[.organization + "/" + .components[].repo]' "${SYSTEM_DEFS_FILE}" -o json)
         echo "BRANCH: ${BRANCH}"
         echo "REPO_NAMES: ${REPO_NAMES}"
-        echo ::set-output name=component-branch::$(echo ${BRANCH})
+        echo ::set-output name=component-branch::$(echo ${DEV_BRANCH})
         echo ::set-output name=component-repos::$(echo ${REPO_NAMES})
         set +ex
     outputs:
