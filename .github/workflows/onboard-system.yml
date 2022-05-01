@@ -34,7 +34,7 @@ jobs:
       name: clone-cicd-manager-repo
       uses: actions/checkout@v2
       with:
-        repository: ${GITHUB_REPOSITORY_OWNER}/${{ env.CICD_MANAGER }}
+        repository: ${{ github.event.repository.owner }}/${{ env.CICD_MANAGER }}
         ref: development
         path: ${{ env.CICD_REPO_MGR_DIR }}
     - id: parse-system-def
