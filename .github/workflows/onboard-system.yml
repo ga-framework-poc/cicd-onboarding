@@ -102,9 +102,7 @@ jobs:
           SYSTEM_NAME: ${{ github.event.inputs.system-name }}
           TEAM_NAME: ${{ github.event.inputs.team-name }}
         run: |
-          set -ex 
-
-          ls -alR --ignore=.git ${CICD_REPO_ONBOARDING_DIR}
+          set -ex
 
           for F_NAME in $(find ${CICD_REPO_ONBOARDING_DIR}/.github-app-template/workflows -name "*.yml" -or -name "*.yaml")
           do
