@@ -44,7 +44,7 @@ jobs:
         SYSTEM_DEFS_FILE=$(ls ${SYSTEM_DEFS_DIR}/${SYSTEM_NAME}.y*)
         DEV_BRANCH=$(yq e '.branch' "${SYSTEM_DEFS_FILE}")
         REPO_NAMES=$(yq e '[.organization + "/" + .components[].repo]' "${SYSTEM_DEFS_FILE}" -o json)
-        echo "BRANCH: ${BRANCH}"
+        echo "DEV_BRANCH: ${DEV_BRANCH}"
         echo "REPO_NAMES: ${REPO_NAMES}"
         echo ::set-output name=component-branch::$(echo ${DEV_BRANCH})
         echo ::set-output name=component-repos::$(echo ${REPO_NAMES})
