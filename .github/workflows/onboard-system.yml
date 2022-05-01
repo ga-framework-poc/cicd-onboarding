@@ -38,7 +38,7 @@ jobs:
       name: parse-system-def
       run: |
         set -x
-        ls -alR ${SYSTEM_DEFS_DIR}
+        ls -alR ${GITHUB_WORKSPACE}
 
         SYSTEM_DEFS_FILE=$(ls ${SYSTEM_DEFS_DIR}/${SYSTEM_NAME}.y*)
         REPO_NAMES=$(yq e '[.organization + "/" + .components[].repo]' "${SYSTEM_DEFS_FILE}" -o json)
