@@ -68,7 +68,7 @@ jobs:
       run: |
         set -ex
 
-        oc login -u ${{ secrets.OCP_USER }} -p ${{ secrets.OCP_CREDS }} ${{ secrets.OCP_URL }}
+        oc login --insecure-skip-tls-verify -u ${{ secrets.OCP_USER }} -p ${{ secrets.OCP_CREDS }} ${{ secrets.OCP_URL }}
         
         echo 'Create dev OCP Project'
         if [[ -z oc get --ignore-not-found project ${SYSTEM_NAME}-${TEAM_NAME}-dev ]]
@@ -80,7 +80,6 @@ jobs:
         fi
 
         set +ex
-
   onboard-system:
     runs-on: ubuntu-latest
     needs: gather-system-info
