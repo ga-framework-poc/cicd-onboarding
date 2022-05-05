@@ -56,6 +56,31 @@ jobs:
       CICD_MANAGER: ${{ env.CICD_MANAGER }}
       CICD_REPO_MGR_DIR: ${{ env.CICD_REPO_MGR_DIR }}
       SYSTEM_DEFS_DIR: ${{ env.SYSTEM_DEFS_DIR }}
+  create-environments:
+    runs-on: ubuntu-latest
+    needs: gather-system-info
+    env:
+      SYSTEM_NAME: ${{ github.event.inputs.system-name }}
+      TEAM_NAME: ${{ github.event.inputs.team-name }}
+    steps:
+    - id: create-deploy-environments
+      name: create-deploy-environments
+      run: |
+        set -ex
+
+        oc login -u ${{ secrets.OCP_USER }} -p ${{ secrets.OCP_CREDS }} ${{ secrets.OCP_URL }}
+        
+        echo 'Create dev OCP Project'
+        if [[ -z oc get --ignore-not-found project ${SYSTEM_NAME}-${TEAM_NAME}-dev ]]
+        then
+            echo 'dev OCP Project not found: CREATING'
+            oc new-project ${SYSTEM_NAME}-${TEAM_NAME}-dev
+        else
+            echo 'dev OCP Project found: SKIPPING'
+        fi
+
+        set +ex
+
   onboard-system:
     runs-on: ubuntu-latest
     needs: gather-system-info
@@ -127,13 +152,6 @@ jobs:
               echo "Pushed ${WORKING_DIR}/.github to ${{ matrix.component-repo }}"
           else
               echo "${{ matrix.component-repo }} is unchanged.  Skipping..."
-          fi
-
-          oc login -u ${{ secrets.OCP_USER }} -p ${{ secrets.OCP_CREDS }} ${{ secrets.OCP_URL }}
-
-          if [[ -z oc get --ignore-not-found project ${SYSTEM_NAME}-${TEAM_NAME}-dev ]]
-          then
-              oc new-project ${SYSTEM_NAME}-${TEAM_NAME}-dev
           fi
 
           set +ex
