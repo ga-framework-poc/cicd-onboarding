@@ -71,7 +71,7 @@ jobs:
         oc login --insecure-skip-tls-verify -u ${{ secrets.OCP_USER }} -p ${{ secrets.OCP_CREDS }} ${{ secrets.OCP_URL }}
         
         echo 'Create dev OCP Project'
-        if [[ -z oc get --ignore-not-found project ${SYSTEM_NAME}-${TEAM_NAME}-dev ]]
+        if [[ -z $(oc get --ignore-not-found project ${SYSTEM_NAME}-${TEAM_NAME}-dev) ]]
         then
             echo 'dev OCP Project not found: CREATING'
             oc new-project ${SYSTEM_NAME}-${TEAM_NAME}-dev
