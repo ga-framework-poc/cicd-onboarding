@@ -104,6 +104,7 @@ jobs:
         run: |
           set -ex
 
+          echo 'Generating build.yml for ${{ matrix.component-repo }}'
           for F_NAME in $(find ${CICD_REPO_ONBOARDING_DIR}/.github-app-template/workflows -name "*.yml" -or -name "*.yaml")
           do
               mv ${F_NAME} $(echo ${F_NAME} | sed -e "s/.yml$/-${TEAM_NAME}.yml/" -e "s/.yaml$/-${TEAM_NAME}.yaml/") ;
@@ -123,7 +124,16 @@ jobs:
               git -C ${WORKING_DIR} add -A
               git -C ${WORKING_DIR} commit -am '[skip ci] installing latest cicd-manager GitHub Action Workflow(s)'
               git -C ${WORKING_DIR} push
+              echo "Pushed ${WORKING_DIR}/.github to ${{ matrix.component-repo }}"
           else
               echo "${{ matrix.component-repo }} is unchanged.  Skipping..."
           fi
+
+          oc login -u ${{ secrets.OCP_USER }} -p ${{ secrets.OCP_CREDS }} ${{ OCP_URL }}
+
+          if [[ -z oc get --ignore-not-found project ${SYSTEM_NAME}-${TEAM_NAME}-dev ]]
+          then
+              oc new-project ${SYSTEM_NAME}-${TEAM_NAME}-dev
+          fi
+
           set +ex
