@@ -45,7 +45,7 @@ jobs:
         path: ${{ env.CICD_REPO_MGR_DIR }}
     - id: parse-system-def
       name: parse-system-def
-      uses: hippyod/cicd-manager/actions/run-step@development
+      uses: hippyod/cicd-manager/run-step@development
       with:
         label: infra
         step-name: parse-system-def
@@ -71,7 +71,7 @@ jobs:
     steps:
     - id: configure-sdlc-environments
       name: configure-sdlc-environments
-      uses: hippyod/cicd-manager/actions/run-step@development
+      uses: hippyod/cicd-manager/run-step@development
       with:
         label: infra
         step-name: configure-sdlc-environments
