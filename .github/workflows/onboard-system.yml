@@ -5,6 +5,8 @@ on:
       system-name:
         description: 'system-name: Name of the system to be onboarded and managed by the CICD system'
         required: true
+env:
+  SYSTEM_NAME: ${{ github.event.inputs.system-name }}
 jobs:
   gather-system-info:
     runs-on: ubuntu-latest
