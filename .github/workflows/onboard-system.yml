@@ -32,6 +32,35 @@ jobs:
         path: ${{ env.CICD_REPO_MGR_DIR }}
     - id: parse-system-def
       name: parse-system-def
+      run: |
+        set -ex
+        SYSTEM_DEFS_FILE=$(ls ${SYSTEM_DEFS_DIR}/${SYSTEM_NAME}.y*)
+        echo "SYSTEM_DEFS_FILE=${SYSTEM_DEFS_FILE}" >> ${GITHUB_ENV}
+
+        TEAM_NAME=$(yq '.team' "${SYSTEM_DEFS_FILE}")
+        echo "TEAM_NAME=${TEAM_NAME}" >> ${GITHUB_ENV}
+
+        DEV_BRANCH=$(yq '.branch' "${SYSTEM_DEFS_FILE}")
+        echo "DEV_BRANCH=${DEV_BRANCH}" >> ${GITHUB_ENV}
+
+        REPO_NAMES=$(yq '[.organization + "/" + .components[].repo]' "${SYSTEM_DEFS_FILE}" -o json)
+        echo "REPO_NAMES=${REPO_NAMES}" >> ${GITHUB_ENV}
+
+        DEV_ENVIRONMENT=$(yq '.dev.name' "${SYSTEM_DEFS_FILE}")
+        echo "DEV_ENVIRONMENT=${DEV_ENVIRONMENT}" >> ${GITHUB_ENV}
+
+        DEV_RESOURCEQUOTA=$(yq '.dev.size' "${SYSTEM_DEFS_FILE}")
+        echo "DEV_RESOURCEQUOTA=${DEV_RESOURCEQUOTA}" >> ${GITHUB_ENV}
+
+        TEST_ENVIRONMENTS=$(yq '.test-environments | keys' "${SYSTEM_DEFS_FILE}" -o json)
+        echo "TEST_ENVIRONMENTS=${TEST_ENVIRONMENTS}" >> ${GITHUB_ENV}
+
+        TEST_RESOURCEQUOTAS=$(yq '[.test-environments.*]' "${SYSTEM_DEFS_FILE}" -o json)
+        echo "TEST_RESOURCEQUOTAS=${TEST_RESOURCEQUOTAS}" >> ${GITHUB_ENV}
+
+        set +ex
+    - id: parse-system-def
+      name: parse-system-def
       uses: hippyod/cicd-manager/run-step@development
       with:
         label: infra
@@ -55,13 +84,13 @@ jobs:
       DEV_RESOURCEQUOTA: ${{ needs.gather-system-info.outputs.DEV_ENVIRONMENT }}
       TEST_ENVIRONMENTS: ${{ needs.gather-system-info.outputs.TEST_ENVIRONMENTS }}
       TEST_RESOURCEQUOTAS: ${{ needs.gather-system-info.outputs.TEST_RESOURCEQUOTAS }}
-    steps:
-    - id: configure-sdlc-environments
-      name: configure-sdlc-environments
-      uses: hippyod/cicd-manager/run-step@development
-      with:
-        label: infra
-        step-name: configure-sdlc-environments
+    # steps:
+    # - id: configure-sdlc-environments
+    #   name: configure-sdlc-environments
+    #   uses: hippyod/cicd-manager/run-step@development
+    #   with:
+    #     label: infra
+    #     step-name: configure-sdlc-environments
   onboard-system:
     runs-on: ubuntu-latest
     needs: gather-system-info
