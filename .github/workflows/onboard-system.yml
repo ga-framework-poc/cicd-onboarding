@@ -11,10 +11,25 @@ jobs:
     steps:
     - id: setup-environment
       name: setup-environment
-      uses: hippyod/cicd-manager/actions/run-step@development
-      with:
-        label: infra
-        step-name: setup-environment
+      run: |
+        set -ex
+
+        CICD_ONBOARDING=cicd-onboarding
+        CICD_MANAGER=cicd-manager
+
+        echo "CICD_ONBOARDING=${CICD_ONBOARDING}" >> ${GITHUB_ENV}
+        echo "CICD_MANAGER=${CICD_MANAGER}" >> ${GITHUB_ENV}
+
+        echo "SYSTEM_NAME=${{ github.event.inputs.system-name }}" >> ${GITHUB_ENV}
+        echo "TEAM_NAME=${{ github.event.inputs.system-name }}" >> ${GITHUB_ENV}
+
+        echo "CICD_REPO_ONBOARDING_DIR=${GITHUB_WORKSPACE}/${CICD_ONBOARDING}" >> ${GITHUB_ENV}
+        echo "CICD_REPO_MGR_DIR=${GITHUB_WORKSPACE}/${CICD_MANAGER}" >> ${GITHUB_ENV}
+        echo "SYSTEM_DEFS_DIR=${GITHUB_WORKSPACE}/${CICD_MANAGER}/.github/system-defs" >> ${GITHUB_ENV}
+
+        echo "WORKING_DIR=${GITHUB_WORKSPACE}/${GITHUB_REPOSITORY}" >> ${GITHUB_ENV}
+
+        set +ex
     - id: clone-cicd-onboarding-repo
       name: clone-cicd-onboarding-repo
       uses: actions/checkout@v2
