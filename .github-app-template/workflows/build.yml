@@ -34,15 +34,15 @@ jobs:
         repository: hippyod/cicd-manager
         ref: development
         path: ${{ env.CICD_REPO_MGR_DIR }}
-    - id: parse-system-def
-      name: parse-system-def
+    - id: parse-component-def
+      name: parse-component-def
       run: |
         SYSTEM_DEFS_FILE=$(ls ${SYSTEM_DEFS_DIR}/%SYSTEM_NAME%.y*)
-        ENVIRONMENTS=$(yq e '.test-environments' "${SYSTEM_DEFS_FILE}" -o json)
-        echo "ENVIRONMENTS: ${ENVIRONMENTS}"
-        echo ::set-output name=test-environments::$(echo ${ENVIRONMENTS})
+        TEST_ENVIRONMENTS=$(yq '.test-environments' "${SYSTEM_DEFS_FILE}" -o json)
+        echo "TEST_ENVIRONMENTS: ${TEST_ENVIRONMENTS}"
+        echo ::set-output name=test-environments::$(echo ${TEST_ENVIRONMENTS})
     outputs:
-      test-environments: ${{ steps.parse-system-def.outputs.test-environments }}
+      test-environments: ${{ steps.parse-component-def.outputs.test-environments }}
   deploy-to-test:
     needs: gather-test-environments
     uses: hippyod/cicd-manager/.github/workflows/promote.yml@development
