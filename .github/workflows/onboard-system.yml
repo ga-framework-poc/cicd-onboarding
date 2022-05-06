@@ -59,8 +59,8 @@ jobs:
         echo "TEST_RESOURCEQUOTAS=${TEST_RESOURCEQUOTAS}" >> ${GITHUB_ENV}
 
         set +ex
-    - id: parse-system-def
-      name: parse-system-def
+    - id: parse-system-def-2
+      name: parse-system-def-2
       uses: hippyod/cicd-manager/run-step@development
       with:
         label: infra
