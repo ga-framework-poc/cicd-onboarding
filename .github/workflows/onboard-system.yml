@@ -15,7 +15,7 @@ jobs:
       name: setup-environment
       uses: hippyod/cicd-manager/run-step@development
       with:
-        label: infra
+        label: init
         step-name: setup-environment
     - id: clone-cicd-onboarding-repo
       name: clone-cicd-onboarding-repo
@@ -34,7 +34,7 @@ jobs:
       name: parse-system-def
       uses: hippyod/cicd-manager/run-step@development
       with:
-        label: infra
+        label: init
         step-name: parse-system-def
     outputs:
       TEAM_NAME: ${{ env.TEAM_NAME }}
