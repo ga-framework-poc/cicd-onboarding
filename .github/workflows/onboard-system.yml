@@ -56,6 +56,10 @@ jobs:
       TEST_ENVIRONMENTS: ${{ needs.gather-system-info.outputs.TEST_ENVIRONMENTS }}
       TEST_RESOURCEQUOTAS: ${{ needs.gather-system-info.outputs.TEST_RESOURCEQUOTAS }}
     steps:
+    - id: oc-login
+      name: oc-login
+      run: |
+        oc login --insecure-skip-tls-verify -u ${{ secrets.OCP_USER }} -p ${{ secrets.OCP_CREDS }} ${{ secrets.OCP_URL }}
     - id: configure-sdlc-environments
       name: configure-sdlc-environments
       uses: hippyod/cicd-manager/run-step@development
