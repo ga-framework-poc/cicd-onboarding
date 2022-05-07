@@ -42,7 +42,6 @@ jobs:
       REPO_NAMES: ${{ env.REPO_NAMES }}
       CICD_REPO_ONBOARDING_DIR: ${{ env.CICD_REPO_ONBOARDING_DIR }}
       DEV_ENVIRONMENT: ${{ env.DEV_ENVIRONMENT }}
-      DEV_RESOURCEQUOTA: ${{ env.DEV_ENVIRONMENT }}
       TEST_ENVIRONMENTS: ${{ env.TEST_ENVIRONMENTS }}
       RESOURCE_QUOTAS: ${{ env.RESOURCE_QUOTAS }}
   configure-sdlc-environments:
@@ -52,7 +51,6 @@ jobs:
       SYSTEM_NAME: ${{ github.event.inputs.system-name }}
       TEAM_NAME: ${{ needs.gather-system-info.outputs.TEAM_NAME }}
       DEV_ENVIRONMENT: ${{ needs.gather-system-info.outputs.DEV_ENVIRONMENT }}
-      DEV_RESOURCEQUOTA: ${{ needs.gather-system-info.outputs.DEV_ENVIRONMENT }}
       TEST_ENVIRONMENTS: ${{ needs.gather-system-info.outputs.TEST_ENVIRONMENTS }}
       RESOURCE_QUOTAS: ${{ needs.gather-system-info.outputs.RESOURCE_QUOTAS }}
     steps:
