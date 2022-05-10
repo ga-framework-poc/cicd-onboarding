@@ -8,12 +8,14 @@ jobs:
     uses: hippyod/cicd-manager/.github/workflows/build-from-source.yml@development
     with:
       system-name: %SYSTEM_NAME%
+    secrets: inherit
   deploy-to-dev:
     needs: build-from-source
     uses: hippyod/cicd-manager/.github/workflows/promote.yml@development
     with:
       system-name: %SYSTEM_NAME%
       team-name: %TEAM_NAME%
+    secrets: inherit
   gather-test-environments:
     needs: deploy-to-dev
     runs-on: ubuntu-latest
