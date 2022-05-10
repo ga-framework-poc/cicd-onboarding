@@ -62,6 +62,7 @@ jobs:
       name: oc-login
       run: |
         oc login --insecure-skip-tls-verify -u ${{ secrets.OCP_USER }} -p ${{ secrets.OCP_CREDS }} ${{ secrets.OCP_URL }}
+        oc version
         helm version
     - id: configure-sdlc-environments
       name: configure-sdlc-environments
