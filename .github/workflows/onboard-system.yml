@@ -44,6 +44,8 @@ jobs:
       DEV_ENVIRONMENT: ${{ env.DEV_ENVIRONMENT }}
       TEST_ENVIRONMENTS: ${{ env.TEST_ENVIRONMENTS }}
       RESOURCE_QUOTAS: ${{ env.RESOURCE_QUOTAS }}
+      IMAGE_REGISTRY_URL: ${{ env.IMAGE_REGISTRY_URL }}
+      IMAGE_REGISTRY_USERNAME: ${{ env.IMAGE_REGISTRY_USERNAME }}
   configure-sdlc-environments:
     runs-on: ubuntu-latest
     needs: gather-system-info
@@ -53,6 +55,8 @@ jobs:
       DEV_ENVIRONMENT: ${{ needs.gather-system-info.outputs.DEV_ENVIRONMENT }}
       TEST_ENVIRONMENTS: ${{ needs.gather-system-info.outputs.TEST_ENVIRONMENTS }}
       RESOURCE_QUOTAS: ${{ needs.gather-system-info.outputs.RESOURCE_QUOTAS }}
+      IMAGE_REGISTRY_URL: ${{ needs.gather-system-info.outputs.IMAGE_REGISTRY_URL }}
+      IMAGE_REGISTRY_USERNAME: ${{ needs.gather-system-info.outputs.IMAGE_REGISTRY_USERNAME }}
     steps:
     - id: oc-login
       name: oc-login
