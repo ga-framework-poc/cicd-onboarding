@@ -13,7 +13,7 @@ jobs:
     steps:
     - id: setup-environment
       name: setup-environment
-      uses: hippyod/cicd-manager/run-step@development
+      uses: ga-framework-poc/cicd-manager/run-step@development
       with:
         label: init
         step-name: setup-environment
@@ -32,7 +32,7 @@ jobs:
         path: ${{ env.CICD_REPO_MGR_DIR }}
     - id: parse-system-def
       name: parse-system-def
-      uses: hippyod/cicd-manager/run-step@development
+      uses: ga-framework-poc/cicd-manager/run-step@development
       with:
         label: init
         step-name: parse-system-def
@@ -61,7 +61,7 @@ jobs:
         helm version
     - id: configure-sdlc-environments
       name: configure-sdlc-environments
-      uses: hippyod/cicd-manager/run-step@development
+      uses: ga-framework-poc/cicd-manager/run-step@development
       with:
         label: infra
         step-name: configure-sdlc-environments
