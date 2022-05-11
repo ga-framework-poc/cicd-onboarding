@@ -62,9 +62,13 @@ jobs:
     - id: oc-login
       name: oc-login
       run: |
+        set -ex
+
         oc login --insecure-skip-tls-verify -u ${{ secrets.OCP_USER }} -p ${{ secrets.OCP_CREDS }} ${{ secrets.OCP_URL }}
         oc version
         helm version
+
+        set +ex
     - id: configure-sdlc-environments
       name: configure-sdlc-environments
       uses: ga-framework-poc/cicd-manager/run-step@development
@@ -73,7 +77,7 @@ jobs:
         step-name: configure-sdlc-environments
   onboard-system:
     runs-on: ubuntu-latest
-    needs: gather-system-info
+    needs: configure-sdlc-environments
     env:
       CICD_REPO_ONBOARDING_DIR: ${{ needs.gather-system-info.outputs.CICD_REPO_ONBOARDING_DIR }}
       DEV_BRANCH: ${{ needs.gather-system-info.outputs.DEV_BRANCH }}
@@ -132,4 +136,21 @@ jobs:
               echo "${{ matrix.REPO_NAMES }} is unchanged.  Skipping..."
           fi
 
+          set +ex
+      - id: set-service-account-token
+        name: set-service-account-token
+        run: |
+          set -ex
+
+          oc login --insecure-skip-tls-verify -u ${{ secrets.OCP_USER }} -p ${{ secrets.OCP_CREDS }} ${{ secrets.OCP_URL }}
+
+          SERVICE_ACCOUNT_NAME=${SYSTEM_NAME}-${TEAM_NAME}-service-account
+          SA_SECRET_NAME=$(oc get secrets -o custom-columns=:.metadata.name | grep -m 1 ${SERVICE_ACCOUNT_NAME}-token)
+          SA_TOKEN="::add-mask::{$(oc get secrets ${SA_SECRET_NAME} -o custom-columns=:.data.token | tr -d '[:space:]')}"
+          SA_TOKEN_DECODE="::add-mask::{$(echo ${SA_TOKEN} | base64 -s)}"
+
+          oc login --token=${SA_TOKEN_DECODE} ${secrets.OCP_URL}
+
+          gh secret set OCP_SA_TOKEN < echo SA_TOKEN_DECODE
+          
           set +ex
