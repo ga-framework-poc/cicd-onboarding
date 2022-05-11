@@ -57,6 +57,7 @@ jobs:
       RESOURCE_QUOTAS: ${{ needs.gather-system-info.outputs.RESOURCE_QUOTAS }}
       IMAGE_REGISTRY_URL: ${{ needs.gather-system-info.outputs.IMAGE_REGISTRY_URL }}
       IMAGE_REGISTRY_USERNAME: ${{ needs.gather-system-info.outputs.IMAGE_REGISTRY_USERNAME }}
+      IMAGE_REGISTRY_PWD: ${{ secrets.IMAGE_REGISTRY_PWD }}
     steps:
     - id: oc-login
       name: oc-login
