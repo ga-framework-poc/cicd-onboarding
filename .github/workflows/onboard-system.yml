@@ -80,6 +80,7 @@ jobs:
       OCP_USER: ${{ secrets.OCP_USER }}
       OCP_CREDS: ${{ secrets.OCP_CREDS }}
       OCP_URL: ${{ secrets.OCP_URL }}
+      GITHUB_TOKEN: ${{ secrets.ONBOARDING_CREDS }}
     strategy:
       matrix:
         REPO_NAMES: ${{ fromJSON(needs.gather-system-info.outputs.REPO_NAMES) }}
