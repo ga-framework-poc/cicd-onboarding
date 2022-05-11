@@ -140,8 +140,7 @@ jobs:
       - id: set-service-account-token
         name: set-service-account-token
         run: |
-          set -e
-          set +x
+          set -ex
 
           oc login --insecure-skip-tls-verify -u ${{ secrets.OCP_USER }} -p ${{ secrets.OCP_CREDS }} ${{ secrets.OCP_URL }}
 
@@ -154,4 +153,4 @@ jobs:
 
           gh secret set OCP_SA_TOKEN --body "${SA_TOKEN_DECODE}" -R ${{ matrix.REPO_NAMES }}
           
-          set +e
+          set +ex
